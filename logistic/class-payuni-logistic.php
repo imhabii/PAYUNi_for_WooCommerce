@@ -44,9 +44,13 @@ class WC_PAYUNi_Logistic
                 return $payment_gateways;
             }
             $chosen_shipping_tmp = wc_get_chosen_shipping_method_ids();
-            $chosen_shipping     = $chosen_shipping_tmp[0];
+            $chosen_shipping     = is_array($chosen_shipping_tmp) ? reset($chosen_shipping_tmp) : '';
 
             if (!empty($chosen_shipping) && preg_match("/PAYUNi/i", $chosen_shipping)) {
+                if (empty($payment_gateways['payuni'])) {
+                    return $payment_gateways;
+                }
+
                 $payment_gateways = [
                     'payuni' => $payment_gateways['payuni']
                 ];
